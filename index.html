@@ -28,7 +28,7 @@
     <script type="text/babel">
         const { useState, useEffect, useMemo } = React;
 
-        // --- Système d'Icônes intégré (remplace l'import de lucide-react) ---
+        // --- Système d'Icônes intégré ---
         const ICONS = {
             Plus: '<line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line>',
             Search: '<circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>',
@@ -46,43 +46,56 @@
             RefreshCw: '<polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>',
             AppWindow: '<rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><path d="M10 4v4"></path><path d="M2 8h20"></path><path d="M6 4v4"></path>',
             Edit2: '<path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>',
-            Save: '<path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline>'
+            Save: '<path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline>',
+            Settings: '<circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>',
+            ChevronDown: '<polyline points="6 9 12 15 18 9"></polyline>',
+            Trash2: '<polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line>'
         };
 
         const Icon = ({ name, size = 24, className = "" }) => (
-            <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                width={size} 
-                height={size} 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeWidth="2" 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                className={className}
-                dangerouslySetInnerHTML={{ __html: ICONS[name] }} 
-            />
+            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} dangerouslySetInnerHTML={{ __html: ICONS[name] }} />
         );
 
-        // --- Constantes ---
-        const PROJECTS = [
-            'mAI', 'mSearch', 'Life', 'Droper', 'mBattle', 
-            'BrickVerse', 'mSearch (web)', 'mAISearch', 'mAINews',
-            'mWriter', 'GitHub Services', 'mCloud', 'mStudio', 
-            'mAIApps', 'mAIStudio', 'Vibs', 'mStore', 'mPosts', 'Autres'
+        // --- Palette de Couleurs ---
+        const PALETTE = [
+            { id: 'slate', dot: 'bg-slate-500', bg: 'bg-slate-100', text: 'text-slate-700', border: 'border-slate-200' },
+            { id: 'indigo', dot: 'bg-indigo-500', bg: 'bg-indigo-100', text: 'text-indigo-700', border: 'border-indigo-200' },
+            { id: 'sky', dot: 'bg-sky-500', bg: 'bg-sky-100', text: 'text-sky-700', border: 'border-sky-200' },
+            { id: 'emerald', dot: 'bg-emerald-500', bg: 'bg-emerald-100', text: 'text-emerald-700', border: 'border-emerald-200' },
+            { id: 'amber', dot: 'bg-amber-500', bg: 'bg-amber-100', text: 'text-amber-700', border: 'border-amber-200' },
+            { id: 'rose', dot: 'bg-rose-500', bg: 'bg-rose-100', text: 'text-rose-700', border: 'border-rose-200' },
+            { id: 'purple', dot: 'bg-purple-500', bg: 'bg-purple-100', text: 'text-purple-700', border: 'border-purple-200' },
+            { id: 'fuchsia', dot: 'bg-fuchsia-500', bg: 'bg-fuchsia-100', text: 'text-fuchsia-700', border: 'border-fuchsia-200' }
         ];
 
-        const SOFTWARES = [
-            'ChatGPT', 'xAI', 'zAI', 'mAI', 'Gemini', 'Copilot',
-            'Office Microsoft', 'GitHub', 'Base44', 'Lovable', 
-            'GAntigravity', 'VS Code', 'GAI Studio', 'Autres'
+        // --- Données par défaut (seront fusionnées avec le localStorage) ---
+        const DEFAULT_PROJECTS = [
+            { name: 'mAI', color: 'indigo' }, { name: 'mSearch', color: 'sky' },
+            { name: 'Life', color: 'emerald' }, { name: 'Droper', color: 'amber' },
+            { name: 'mBattle', color: 'rose' }, { name: 'BrickVerse', color: 'purple' },
+            { name: 'mSearch (web)', color: 'sky' }, { name: 'mAISearch', color: 'indigo' },
+            { name: 'mAINews', color: 'fuchsia' }, { name: 'mWriter', color: 'slate' },
+            { name: 'GitHub Services', color: 'slate' }, { name: 'mCloud', color: 'sky' },
+            { name: 'mStudio', color: 'purple' }, { name: 'mAIApps', color: 'indigo' },
+            { name: 'mAIStudio', color: 'fuchsia' }, { name: 'Vibs', color: 'rose' },
+            { name: 'mStore', color: 'amber' }, { name: 'mPosts', color: 'sky' },
+            { name: 'Autres', color: 'slate' }
+        ];
+
+        const DEFAULT_SOFTWARES = [
+            { name: 'ChatGPT', color: 'emerald' }, { name: 'xAI', color: 'slate' },
+            { name: 'zAI', color: 'indigo' }, { name: 'mAI', color: 'indigo' },
+            { name: 'Gemini', color: 'sky' }, { name: 'Copilot', color: 'purple' },
+            { name: 'Office Microsoft', color: 'rose' }, { name: 'GitHub', color: 'slate' },
+            { name: 'Base44', color: 'amber' }, { name: 'Lovable', color: 'fuchsia' },
+            { name: 'GAntigravity', color: 'sky' }, { name: 'VS Code', color: 'sky' },
+            { name: 'GAI Studio', color: 'purple' }, { name: 'Autres', color: 'slate' }
         ];
 
         const PRIORITIES = {
-            'Mineur': { color: 'text-emerald-700', bg: 'bg-emerald-100', border: 'border-emerald-200' },
-            'Modéré': { color: 'text-amber-700', bg: 'bg-amber-100', border: 'border-amber-200' },
-            'Majeur': { color: 'text-rose-700', bg: 'bg-rose-100', border: 'border-rose-200' }
+            'Mineur': { id: 'emerald', bg: 'bg-emerald-100', text: 'text-emerald-700', border: 'border-emerald-200' },
+            'Modéré': { id: 'amber', bg: 'bg-amber-100', text: 'text-amber-700', border: 'border-amber-200' },
+            'Majeur': { id: 'rose', bg: 'bg-rose-100', text: 'text-rose-700', border: 'border-rose-200' }
         };
 
         const STATUSES = {
@@ -94,33 +107,70 @@
         };
 
         const SHORTCUTS = [
-            "En cours d'analyse 🕵️‍♂️",
-            "Mise à jour établie 🔄",
-            "Incident résolu ✅",
-            "Incident clos 🔒",
-            "Fix en cours de déploiement 🚀",
-            "Besoin de plus de détails ❓",
-            "Transféré à l'équipe tech 👨‍💻",
-            "C'est une feature, pas un bug 😎",
-            "Testé sur mOS, tout roule 🍏"
+            "En cours d'analyse 🕵️‍♂️", "Mise à jour établie 🔄", "Incident résolu ✅", 
+            "Incident clos 🔒", "Fix en cours de déploiement 🚀", "Besoin de plus de détails ❓", 
+            "Transféré à l'équipe tech 👨‍💻", "C'est une feature, pas un bug 😎", "Testé sur mOS, tout roule 🍏"
         ];
+
+        // --- Menu Déroulant Sur-Mesure (Custom Select) ---
+        function CustomSelect({ value, options, onChange, icon, className="" }) {
+            const [isOpen, setIsOpen] = useState(false);
+            const selectedOpt = options.find(o => o.value === value) || { label: value, color: 'slate' };
+            const selectedColor = PALETTE.find(p => p.id === selectedOpt.color) || PALETTE[0];
+
+            return (
+                <div className={`relative ${className}`}>
+                    <button type="button" onClick={() => setIsOpen(!isOpen)} className="w-full bg-white border border-slate-200 rounded-xl py-3 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm flex items-center justify-between transition-all hover:border-indigo-300">
+                        <div className="flex items-center gap-2 truncate">
+                            {icon && <Icon name={icon} size={16} className="text-slate-400 shrink-0" />}
+                            {selectedOpt.color && <span className={`w-2.5 h-2.5 rounded-full shrink-0 ${selectedColor.dot}`}></span>}
+                            <span className="truncate text-slate-700 font-medium">{selectedOpt.label}</span>
+                        </div>
+                        <Icon name="ChevronDown" size={16} className={`text-slate-400 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+                    </button>
+                    {isOpen && (
+                        <>
+                            <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)}></div>
+                            <div className="absolute z-50 w-full mt-2 bg-white/90 backdrop-blur-xl border border-white rounded-2xl shadow-xl shadow-slate-200/50 max-h-60 overflow-auto custom-scrollbar animate-in fade-in slide-in-from-top-2 p-1">
+                                {options.map((opt, i) => {
+                                    const optColor = PALETTE.find(p => p.id === opt.color) || PALETTE[0];
+                                    return (
+                                        <button key={i} type="button" onClick={() => { onChange(opt.value); setIsOpen(false); }} className={`w-full text-left px-3 py-2.5 text-sm rounded-xl transition-all flex items-center gap-2 ${value === opt.value ? 'bg-indigo-50 text-indigo-700 font-semibold' : 'text-slate-700 hover:bg-slate-50'}`}>
+                                            {opt.color && <span className={`w-2.5 h-2.5 rounded-full shrink-0 ${optColor.dot}`}></span>}
+                                            <span className="truncate">{opt.label}</span>
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        </>
+                    )}
+                </div>
+            );
+        }
 
         // --- Application Principale ---
         function App() {
-            const [tickets, setTickets] = useState(() => {
-                const saved = localStorage.getItem('mHub_Tickets');
-                return saved ? JSON.parse(saved) : [];
-            });
+            // States (avec fallback localStorage)
+            const [tickets, setTickets] = useState(() => JSON.parse(localStorage.getItem('mHub_Tickets')) || []);
+            const [projects, setProjects] = useState(() => JSON.parse(localStorage.getItem('mHub_Projects')) || DEFAULT_PROJECTS);
+            const [softwares, setSoftwares] = useState(() => JSON.parse(localStorage.getItem('mHub_Softwares')) || DEFAULT_SOFTWARES);
+            
+            // UI States
             const [search, setSearch] = useState('');
             const [filterProject, setFilterProject] = useState('Tous');
             const [filterSoftware, setFilterSoftware] = useState('Tous');
+            
+            // Modals
             const [isModalOpen, setIsModalOpen] = useState(false);
+            const [isSettingsOpen, setIsSettingsOpen] = useState(false);
             const [selectedTicket, setSelectedTicket] = useState(null);
 
-            useEffect(() => {
-                localStorage.setItem('mHub_Tickets', JSON.stringify(tickets));
-            }, [tickets]);
+            // Sauvegarde Auto
+            useEffect(() => localStorage.setItem('mHub_Tickets', JSON.stringify(tickets)), [tickets]);
+            useEffect(() => localStorage.setItem('mHub_Projects', JSON.stringify(projects)), [projects]);
+            useEffect(() => localStorage.setItem('mHub_Softwares', JSON.stringify(softwares)), [softwares]);
 
+            // Filtrage & Stats
             const stats = useMemo(() => ({
                 total: tickets.length,
                 ouverts: tickets.filter(t => t.status === 'Ouvert').length,
@@ -136,59 +186,38 @@
                 .sort((a, b) => new Date(b.date) - new Date(a.date));
             }, [tickets, search, filterProject, filterSoftware]);
 
+            // Actions Tickets
             const addTicket = (newTicket) => {
-                setTickets([{ 
-                ...newTicket, 
-                id: Math.random().toString(36).substr(2, 9),
-                date: new Date().toISOString(),
-                status: 'Ouvert',
-                comments: []
-                }, ...tickets]);
+                setTickets([{ ...newTicket, id: Math.random().toString(36).substr(2, 9), date: new Date().toISOString(), status: 'Ouvert', comments: [] }, ...tickets]);
                 setIsModalOpen(false);
             };
 
             const updateTicketStatus = (id, newStatus) => {
                 setTickets(tickets.map(t => t.id === id ? { ...t, status: newStatus } : t));
-                if (selectedTicket && selectedTicket.id === id) {
-                    setSelectedTicket({ ...selectedTicket, status: newStatus });
-                }
+                if (selectedTicket && selectedTicket.id === id) setSelectedTicket({ ...selectedTicket, status: newStatus });
             };
 
             const addComment = (id, commentText) => {
                 if (!commentText.trim()) return;
-                const newComment = {
-                id: Math.random().toString(36).substr(2, 9),
-                text: commentText,
-                date: new Date().toISOString()
-                };
+                const newComment = { id: Math.random().toString(36).substr(2, 9), text: commentText, date: new Date().toISOString() };
                 setTickets(tickets.map(t => t.id === id ? { ...t, comments: [...t.comments, newComment] } : t));
-                if (selectedTicket && selectedTicket.id === id) {
-                    setSelectedTicket({ ...selectedTicket, comments: [...selectedTicket.comments, newComment] });
-                }
+                if (selectedTicket && selectedTicket.id === id) setSelectedTicket({ ...selectedTicket, comments: [...selectedTicket.comments, newComment] });
             };
 
             const updateTicketDetails = (id, updates) => {
                 setTickets(tickets.map(t => t.id === id ? { ...t, ...updates } : t));
-                if (selectedTicket && selectedTicket.id === id) {
-                    setSelectedTicket({ ...selectedTicket, ...updates });
-                }
+                if (selectedTicket && selectedTicket.id === id) setSelectedTicket({ ...selectedTicket, ...updates });
             };
 
             const editComment = (ticketId, commentId, newText) => {
                 if (!newText.trim()) return;
-                setTickets(tickets.map(t => {
-                    if (t.id === ticketId) {
-                        return { ...t, comments: t.comments.map(c => c.id === commentId ? { ...c, text: newText } : c) };
-                    }
-                    return t;
-                }));
-                if (selectedTicket && selectedTicket.id === ticketId) {
-                    setSelectedTicket({
-                        ...selectedTicket,
-                        comments: selectedTicket.comments.map(c => c.id === commentId ? { ...c, text: newText } : c)
-                    });
-                }
+                setTickets(tickets.map(t => t.id === ticketId ? { ...t, comments: t.comments.map(c => c.id === commentId ? { ...c, text: newText } : c) } : t));
+                if (selectedTicket && selectedTicket.id === ticketId) setSelectedTicket({ ...selectedTicket, comments: selectedTicket.comments.map(c => c.id === commentId ? { ...c, text: newText } : c) });
             };
+
+            // Formatage des options pour les dropdowns
+            const projectOptions = [{ label: 'Tous les projets', value: 'Tous', color: 'slate' }, ...projects.map(p => ({ label: p.name, value: p.name, color: p.color }))];
+            const softwareOptions = [{ label: 'Tous les logiciels', value: 'Tous', color: 'slate' }, ...softwares.map(s => ({ label: s.name, value: s.name, color: s.color }))];
 
             return (
                 <div className="min-h-screen bg-slate-50 text-slate-800 font-sans selection:bg-indigo-500/20">
@@ -202,9 +231,14 @@
                         {/* Sidebar */}
                         <div className="w-full md:w-64 shrink-0 flex flex-col gap-6">
                             <div className="bg-white/70 backdrop-blur-xl border border-white rounded-3xl p-6 shadow-xl shadow-slate-200/50">
-                                <h1 className="text-2xl font-bold bg-gradient-to-r from-indigo-500 to-rose-500 bg-clip-text text-transparent flex items-center gap-2 mb-6">
-                                    <Icon name="Activity" className="text-indigo-500" /> mHub Center
-                                </h1>
+                                <div className="flex items-center justify-between mb-6">
+                                    <h1 className="text-2xl font-bold bg-gradient-to-r from-indigo-500 to-rose-500 bg-clip-text text-transparent flex items-center gap-2">
+                                        <Icon name="Activity" className="text-indigo-500" /> mHub
+                                    </h1>
+                                    <button onClick={() => setIsSettingsOpen(true)} className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-white rounded-full transition-all shadow-sm">
+                                        <Icon name="Settings" size={20} />
+                                    </button>
+                                </div>
                                 <button onClick={() => setIsModalOpen(true)} className="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-3 px-4 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-indigo-500/25 active:scale-95">
                                     <Icon name="Plus" size={18} /> Nouveau Ticket
                                 </button>
@@ -221,24 +255,19 @@
                                     <StatCard label="Résolus" value={stats.resolus} color="text-emerald-600" />
                                 </div>
 
-                                <div className="mt-8">
-                                    <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4 flex items-center gap-2">
-                                        <Icon name="Folder" size={16} /> Projets
-                                    </h2>
-                                    <select value={filterProject} onChange={(e) => setFilterProject(e.target.value)} className="w-full bg-white border border-slate-200 rounded-xl py-2 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 appearance-none text-slate-700 cursor-pointer shadow-sm">
-                                        <option value="Tous">Tous les projets</option>
-                                        {PROJECTS.map(p => <option key={p} value={p}>{p}</option>)}
-                                    </select>
-                                </div>
-
-                                <div className="mt-4">
-                                    <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-2 flex items-center gap-2">
-                                        <Icon name="AppWindow" size={16} /> Logiciels
-                                    </h2>
-                                    <select value={filterSoftware} onChange={(e) => setFilterSoftware(e.target.value)} className="w-full bg-white border border-slate-200 rounded-xl py-2 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 appearance-none text-slate-700 cursor-pointer shadow-sm">
-                                        <option value="Tous">Tous les logiciels</option>
-                                        {SOFTWARES.map(s => <option key={s} value={s}>{s}</option>)}
-                                    </select>
+                                <div className="mt-8 space-y-4">
+                                    <div>
+                                        <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-2 flex items-center gap-2">
+                                            <Icon name="Folder" size={16} /> Projets
+                                        </h2>
+                                        <CustomSelect value={filterProject} options={projectOptions} onChange={setFilterProject} />
+                                    </div>
+                                    <div>
+                                        <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-2 flex items-center gap-2">
+                                            <Icon name="AppWindow" size={16} /> Logiciels
+                                        </h2>
+                                        <CustomSelect value={filterSoftware} options={softwareOptions} onChange={setFilterSoftware} />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -259,32 +288,114 @@
                                         <p>Aucun ticket trouvé. Tout roule ! 🚀</p>
                                     </div>
                                 ) : (
-                                    filteredTickets.map(ticket => (
-                                        <div key={ticket.id} onClick={() => setSelectedTicket(ticket)} className="group bg-white border border-slate-100 hover:border-indigo-300 hover:shadow-md rounded-2xl p-5 cursor-pointer transition-all duration-300 flex items-center gap-4">
-                                            <div className={`p-3 rounded-xl ${STATUSES[ticket.status].bg} ${STATUSES[ticket.status].color}`}>
-                                                <Icon name={STATUSES[ticket.status].icon} size={24} />
-                                            </div>
-                                            <div className="flex-1 min-w-0">
-                                                <div className="flex flex-wrap items-center gap-3 mb-1">
-                                                    <span className="text-xs font-medium px-2.5 py-1 rounded-md bg-slate-100 text-slate-600">{ticket.project}</span>
-                                                    <span className="text-xs font-medium px-2.5 py-1 rounded-md bg-indigo-50 border border-indigo-100 text-indigo-600">{ticket.software || 'Autres'}</span>
-                                                    <span className={`text-xs font-semibold px-2.5 py-1 rounded-md border ${PRIORITIES[ticket.priority].bg} ${PRIORITIES[ticket.priority].color} ${PRIORITIES[ticket.priority].border}`}>{ticket.priority}</span>
-                                                    <span className="text-xs text-slate-400">{new Date(ticket.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })}</span>
+                                    filteredTickets.map(ticket => {
+                                        // Récupération des couleurs dynamiques
+                                        const pColor = PALETTE.find(p => p.id === (projects.find(x => x.name === ticket.project)?.color || 'slate'));
+                                        const sColor = PALETTE.find(p => p.id === (softwares.find(x => x.name === (ticket.software || 'Autres'))?.color || 'slate'));
+
+                                        return (
+                                            <div key={ticket.id} onClick={() => setSelectedTicket(ticket)} className="group bg-white border border-slate-100 hover:border-indigo-300 hover:shadow-md rounded-2xl p-5 cursor-pointer transition-all duration-300 flex items-center gap-4">
+                                                <div className={`p-3 rounded-xl ${STATUSES[ticket.status].bg} ${STATUSES[ticket.status].color}`}>
+                                                    <Icon name={STATUSES[ticket.status].icon} size={24} />
                                                 </div>
-                                                <h3 className="text-lg font-semibold text-slate-800 truncate group-hover:text-indigo-600 transition-colors">{ticket.title}</h3>
+                                                <div className="flex-1 min-w-0">
+                                                    <div className="flex flex-wrap items-center gap-2 mb-2">
+                                                        <span className={`text-xs font-medium px-2.5 py-1 rounded-md border ${pColor.bg} ${pColor.text} ${pColor.border} flex items-center gap-1.5`}>
+                                                            <span className={`w-1.5 h-1.5 rounded-full ${pColor.dot}`}></span> {ticket.project}
+                                                        </span>
+                                                        <span className={`text-xs font-medium px-2.5 py-1 rounded-md border ${sColor.bg} ${sColor.text} ${sColor.border} flex items-center gap-1.5`}>
+                                                            <span className={`w-1.5 h-1.5 rounded-full ${sColor.dot}`}></span> {ticket.software || 'Autres'}
+                                                        </span>
+                                                        <span className={`text-xs font-semibold px-2.5 py-1 rounded-md border ${PRIORITIES[ticket.priority].bg} ${PRIORITIES[ticket.priority].color} ${PRIORITIES[ticket.priority].border}`}>{ticket.priority}</span>
+                                                        <span className="text-xs text-slate-400 ml-auto">{new Date(ticket.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })}</span>
+                                                    </div>
+                                                    <h3 className="text-lg font-semibold text-slate-800 truncate group-hover:text-indigo-600 transition-colors">{ticket.title}</h3>
+                                                </div>
+                                                <Icon name="ChevronRight" className="text-slate-400 group-hover:text-indigo-500 transition-colors shrink-0" />
                                             </div>
-                                            <Icon name="ChevronRight" className="text-slate-400 group-hover:text-indigo-500 transition-colors" />
-                                        </div>
-                                    ))
+                                        )
+                                    })
                                 )}
                             </div>
                         </div>
                     </div>
 
-                    {isModalOpen && <NewTicketModal onClose={() => setIsModalOpen(false)} onSubmit={addTicket} />}
-                    {selectedTicket && <TicketDetailModal ticket={selectedTicket} onClose={() => setSelectedTicket(null)} onUpdateStatus={updateTicketStatus} onAddComment={addComment} onUpdateDetails={updateTicketDetails} onEditComment={editComment} />}
+                    {isSettingsOpen && <SettingsModal onClose={() => setIsSettingsOpen(false)} projects={projects} setProjects={setProjects} softwares={softwares} setSoftwares={setSoftwares} />}
+                    {isModalOpen && <NewTicketModal onClose={() => setIsModalOpen(false)} onSubmit={addTicket} projects={projects} softwares={softwares} />}
+                    {selectedTicket && <TicketDetailModal ticket={selectedTicket} onClose={() => setSelectedTicket(null)} onUpdateStatus={updateTicketStatus} onAddComment={addComment} onUpdateDetails={updateTicketDetails} onEditComment={editComment} projects={projects} softwares={softwares} />}
                 </div>
             );
+        }
+
+        // --- Modale des Paramètres (Ajout Projet/Logiciel) ---
+        function SettingsModal({ onClose, projects, setProjects, softwares, setSoftwares }) {
+            const [activeTab, setActiveTab] = useState('projects');
+            const [newItemName, setNewItemName] = useState('');
+            const [newItemColor, setNewItemColor] = useState('slate');
+
+            const currentList = activeTab === 'projects' ? projects : softwares;
+            const setCurrentList = activeTab === 'projects' ? setProjects : setSoftwares;
+
+            const handleAdd = (e) => {
+                e.preventDefault();
+                if (!newItemName.trim() || currentList.find(i => i.name.toLowerCase() === newItemName.toLowerCase())) return;
+                setCurrentList([...currentList, { name: newItemName.trim(), color: newItemColor }]);
+                setNewItemName('');
+            };
+
+            const handleDelete = (name) => {
+                if(name === 'Autres') return; // On protège le fallback
+                setCurrentList(currentList.filter(i => i.name !== name));
+            };
+
+            return (
+                <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm">
+                    <div className="bg-white border border-slate-100 rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200 flex flex-col max-h-[90vh]">
+                        <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+                            <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2"><Icon name="Settings" /> Paramètres mHub</h2>
+                            <button onClick={onClose} className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-200 rounded-full transition-colors"><Icon name="X" size={20} /></button>
+                        </div>
+                        
+                        <div className="flex border-b border-slate-100 bg-white">
+                            <button onClick={() => setActiveTab('projects')} className={`flex-1 py-3 text-sm font-semibold transition-colors ${activeTab === 'projects' ? 'text-indigo-600 border-b-2 border-indigo-600' : 'text-slate-500 hover:text-slate-800'}`}>Projets</button>
+                            <button onClick={() => setActiveTab('softwares')} className={`flex-1 py-3 text-sm font-semibold transition-colors ${activeTab === 'softwares' ? 'text-indigo-600 border-b-2 border-indigo-600' : 'text-slate-500 hover:text-slate-800'}`}>Logiciels</button>
+                        </div>
+
+                        <div className="p-6 flex-1 overflow-y-auto custom-scrollbar bg-white">
+                            <form onSubmit={handleAdd} className="mb-6 bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                                <label className="block text-sm font-medium text-slate-600 mb-2">Ajouter un nouveau {activeTab === 'projects' ? 'Projet' : 'Logiciel'}</label>
+                                <div className="flex gap-2 mb-3">
+                                    <input type="text" value={newItemName} onChange={e => setNewItemName(e.target.value)} placeholder="Nom..." className="flex-1 bg-white border border-slate-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" required />
+                                </div>
+                                <div className="flex items-center gap-2 mb-4 overflow-x-auto pb-2 custom-scrollbar">
+                                    {PALETTE.map(color => (
+                                        <button key={color.id} type="button" onClick={() => setNewItemColor(color.id)} className={`w-8 h-8 rounded-full shrink-0 ${color.bg} ${color.border} border-2 transition-transform ${newItemColor === color.id ? 'scale-110 ring-2 ring-indigo-500 ring-offset-1' : 'hover:scale-105'}`}>
+                                            <div className={`w-3 h-3 rounded-full mx-auto ${color.dot}`}></div>
+                                        </button>
+                                    ))}
+                                </div>
+                                <button type="submit" className="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 rounded-xl text-sm transition-all shadow-md">Ajouter</button>
+                            </form>
+
+                            <div className="space-y-2">
+                                {currentList.map((item, i) => {
+                                    const c = PALETTE.find(p => p.id === item.color) || PALETTE[0];
+                                    return (
+                                        <div key={i} className="flex items-center justify-between p-3 bg-white border border-slate-100 rounded-xl shadow-sm hover:border-indigo-200 transition-colors">
+                                            <span className={`text-sm font-medium px-2.5 py-1 rounded-md border ${c.bg} ${c.text} ${c.border} flex items-center gap-1.5`}>
+                                                <span className={`w-1.5 h-1.5 rounded-full ${c.dot}`}></span> {item.name}
+                                            </span>
+                                            {item.name !== 'Autres' && (
+                                                <button onClick={() => handleDelete(item.name)} className="p-1.5 text-slate-400 hover:text-rose-500 hover:bg-rose-50 rounded-lg transition-colors"><Icon name="Trash2" size={16} /></button>
+                                            )}
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )
         }
 
         // --- Composants secondaires ---
@@ -297,8 +408,12 @@
             );
         }
 
-        function NewTicketModal({ onClose, onSubmit }) {
-            const [form, setForm] = useState({ title: '', description: '', project: PROJECTS[0], software: SOFTWARES[0], priority: 'Modéré' });
+        function NewTicketModal({ onClose, onSubmit, projects, softwares }) {
+            const [form, setForm] = useState({ title: '', description: '', project: projects[0]?.name || 'Autres', software: softwares[0]?.name || 'Autres', priority: 'Modéré' });
+
+            const pOpts = projects.map(p => ({ label: p.name, value: p.name, color: p.color }));
+            const sOpts = softwares.map(s => ({ label: s.name, value: s.name, color: s.color }));
+            const prioOpts = Object.keys(PRIORITIES).map(k => ({ label: k, value: k, color: PRIORITIES[k].id }));
 
             const handleSubmit = (e) => {
                 e.preventDefault();
@@ -316,31 +431,25 @@
                         <form onSubmit={handleSubmit} className="p-6 space-y-5">
                             <div>
                                 <label className="block text-sm font-medium text-slate-600 mb-2">Titre du problème/feature</label>
-                                <input autoFocus required type="text" value={form.title} onChange={e => setForm({...form, title: e.target.value})} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-800 shadow-sm" placeholder="Ex: Le bot mAI répond en binaire..." />
+                                <input autoFocus required type="text" value={form.title} onChange={e => setForm({...form, title: e.target.value})} className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-800 shadow-sm" placeholder="Ex: Le bot mAI répond en binaire..." />
                             </div>
                             <div className="flex flex-col sm:flex-row gap-4">
                                 <div className="flex-1">
                                     <label className="block text-sm font-medium text-slate-600 mb-2">Projet</label>
-                                    <select value={form.project} onChange={e => setForm({...form, project: e.target.value})} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-800 appearance-none shadow-sm">
-                                        {PROJECTS.map(p => <option key={p} value={p}>{p}</option>)}
-                                    </select>
+                                    <CustomSelect value={form.project} options={pOpts} onChange={v => setForm({...form, project: v})} />
                                 </div>
                                 <div className="flex-1">
                                     <label className="block text-sm font-medium text-slate-600 mb-2">Logiciel source</label>
-                                    <select value={form.software} onChange={e => setForm({...form, software: e.target.value})} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-800 appearance-none shadow-sm">
-                                        {SOFTWARES.map(s => <option key={s} value={s}>{s}</option>)}
-                                    </select>
+                                    <CustomSelect value={form.software} options={sOpts} onChange={v => setForm({...form, software: v})} />
                                 </div>
                                 <div className="flex-1">
                                     <label className="block text-sm font-medium text-slate-600 mb-2">Niveau</label>
-                                    <select value={form.priority} onChange={e => setForm({...form, priority: e.target.value})} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-800 appearance-none shadow-sm">
-                                        {Object.keys(PRIORITIES).map(p => <option key={p} value={p}>{p}</option>)}
-                                    </select>
+                                    <CustomSelect value={form.priority} options={prioOpts} onChange={v => setForm({...form, priority: v})} />
                                 </div>
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-slate-600 mb-2">Description détaillée</label>
-                                <textarea required rows="4" value={form.description} onChange={e => setForm({...form, description: e.target.value})} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-800 resize-none custom-scrollbar shadow-sm" placeholder="Décris le souci ou l'idée avec un max de détails..."></textarea>
+                                <textarea required rows="4" value={form.description} onChange={e => setForm({...form, description: e.target.value})} className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-800 resize-none custom-scrollbar shadow-sm" placeholder="Décris le souci ou l'idée avec un max de détails..."></textarea>
                             </div>
                             <button type="submit" className="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-3 px-4 rounded-xl transition-all shadow-lg shadow-indigo-500/25 active:scale-95">
                                 Lancer le ticket 🚀
@@ -351,68 +460,48 @@
             );
         }
 
-        function TicketDetailModal({ ticket, onClose, onUpdateStatus, onAddComment, onUpdateDetails, onEditComment }) {
+        function TicketDetailModal({ ticket, onClose, onUpdateStatus, onAddComment, onUpdateDetails, onEditComment, projects, softwares }) {
             const [commentText, setCommentText] = useState('');
             const [shortcutMenu, setShortcutMenu] = useState(null);
             const [shortcutQuery, setShortcutQuery] = useState('');
 
             const [isEditing, setIsEditing] = useState(false);
             const [editForm, setEditForm] = useState({ title: ticket.title, description: ticket.description });
-
             const [editingCommentId, setEditingCommentId] = useState(null);
             const [editCommentText, setEditCommentText] = useState('');
 
-            useEffect(() => {
-                setEditForm({ title: ticket.title, description: ticket.description });
-            }, [ticket.title, ticket.description]);
+            useEffect(() => setEditForm({ title: ticket.title, description: ticket.description }), [ticket.title, ticket.description]);
 
-            const handleSaveDetails = () => {
-                onUpdateDetails(ticket.id, editForm);
-                setIsEditing(false);
-            };
-
-            const handleSaveComment = (commentId) => {
-                onEditComment(ticket.id, commentId, editCommentText);
-                setEditingCommentId(null);
-            };
-
+            const handleSaveDetails = () => { onUpdateDetails(ticket.id, editForm); setIsEditing(false); };
+            const handleSaveComment = (commentId) => { onEditComment(ticket.id, commentId, editCommentText); setEditingCommentId(null); };
+            
             const handleComment = (e) => {
-                e.preventDefault();
-                onAddComment(ticket.id, commentText);
-                setCommentText('');
-                setShortcutMenu(null);
+                e.preventDefault(); onAddComment(ticket.id, commentText);
+                setCommentText(''); setShortcutMenu(null);
             };
 
             const handleInputChange = (e) => {
-                const val = e.target.value;
-                setCommentText(val);
-                
-                // Détecte si le dernier mot tapé commence par /, *, ou +
+                const val = e.target.value; setCommentText(val);
                 const match = val.match(/(?:^|\s)([\/\*\+])([^\s]*)$/);
-                if (match) {
-                    setShortcutMenu(match[1]);
-                    setShortcutQuery(match[2]);
-                } else {
-                    setShortcutMenu(null);
-                }
+                if (match) { setShortcutMenu(match[1]); setShortcutQuery(match[2]); } 
+                else { setShortcutMenu(null); }
             };
 
             const insertShortcut = (text) => {
-                // Remplace juste le déclencheur par le texte sélectionné (pratique en milieu de phrase)
-                const newVal = commentText.replace(/(?:^|\s)([\/\*\+])[^\s]*$/, (match) => {
-                    return match.startsWith(' ') ? ' ' + text + ' ' : text + ' ';
-                });
-                setCommentText(newVal);
-                setShortcutMenu(null);
+                const newVal = commentText.replace(/(?:^|\s)([\/\*\+])[^\s]*$/, (match) => match.startsWith(' ') ? ' ' + text + ' ' : text + ' ');
+                setCommentText(newVal); setShortcutMenu(null);
             };
 
             let currentShortcutList = [];
             let shortcutTitle = "";
             if (shortcutMenu === '/') { currentShortcutList = SHORTCUTS; shortcutTitle = "Réponses rapides"; }
-            if (shortcutMenu === '*') { currentShortcutList = SOFTWARES; shortcutTitle = "Logiciels"; }
-            if (shortcutMenu === '+') { currentShortcutList = PROJECTS; shortcutTitle = "Projets"; }
+            if (shortcutMenu === '*') { currentShortcutList = softwares.map(s=>s.name); shortcutTitle = "Logiciels"; }
+            if (shortcutMenu === '+') { currentShortcutList = projects.map(p=>p.name); shortcutTitle = "Projets"; }
 
             const filteredShortcuts = currentShortcutList.filter(s => s.toLowerCase().includes(shortcutQuery.toLowerCase()));
+
+            const pColor = PALETTE.find(p => p.id === (projects.find(x => x.name === ticket.project)?.color || 'slate'));
+            const sColor = PALETTE.find(p => p.id === (softwares.find(x => x.name === (ticket.software || 'Autres'))?.color || 'slate'));
 
             return (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm">
@@ -420,23 +509,20 @@
                         <div className="p-6 border-b border-slate-100 flex items-start justify-between bg-slate-50 relative group">
                             <div className="flex-1 pr-12">
                                 <div className="flex flex-wrap items-center gap-3 mb-3">
-                                    <span className="text-xs font-medium px-2.5 py-1 rounded-md bg-white border border-slate-200 text-slate-600 shadow-sm">{ticket.project}</span>
-                                    <span className="text-xs font-medium px-2.5 py-1 rounded-md bg-indigo-50 border border-indigo-100 text-indigo-600 shadow-sm flex items-center gap-1">
-                                        <Icon name="AppWindow" size={12} /> {ticket.software || 'Autres'}
+                                    <span className={`text-xs font-medium px-2.5 py-1 rounded-md border ${pColor.bg} ${pColor.text} ${pColor.border} flex items-center gap-1.5 shadow-sm`}>
+                                        <span className={`w-1.5 h-1.5 rounded-full ${pColor.dot}`}></span> {ticket.project}
                                     </span>
-                                    <span className={`text-xs font-semibold px-2.5 py-1 rounded-md border ${PRIORITIES[ticket.priority].bg} ${PRIORITIES[ticket.priority].color} ${PRIORITIES[ticket.priority].border}`}>{ticket.priority}</span>
+                                    <span className={`text-xs font-medium px-2.5 py-1 rounded-md border ${sColor.bg} ${sColor.text} ${sColor.border} flex items-center gap-1.5 shadow-sm`}>
+                                        <span className={`w-1.5 h-1.5 rounded-full ${sColor.dot}`}></span> {ticket.software || 'Autres'}
+                                    </span>
+                                    <span className={`text-xs font-semibold px-2.5 py-1 rounded-md border ${PRIORITIES[ticket.priority].bg} ${PRIORITIES[ticket.priority].color} ${PRIORITIES[ticket.priority].border} shadow-sm`}>{ticket.priority}</span>
                                     <span className={`text-xs font-semibold px-2.5 py-1 rounded-md border flex items-center gap-1 bg-white shadow-sm ${STATUSES[ticket.status].color}`}>
                                         <Icon name={STATUSES[ticket.status].icon} size={12} /> {ticket.status}
                                     </span>
                                 </div>
                                 
                                 {isEditing ? (
-                                    <input 
-                                        type="text" 
-                                        value={editForm.title} 
-                                        onChange={e => setEditForm({...editForm, title: e.target.value})}
-                                        className="w-full text-2xl font-bold text-slate-800 bg-white border border-indigo-300 rounded-lg px-3 py-1 mb-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm"
-                                    />
+                                    <input type="text" value={editForm.title} onChange={e => setEditForm({...editForm, title: e.target.value})} className="w-full text-2xl font-bold text-slate-800 bg-white border border-indigo-300 rounded-lg px-3 py-1 mb-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm" />
                                 ) : (
                                     <h2 className="text-2xl font-bold text-slate-800 leading-tight pr-8">{ticket.title}</h2>
                                 )}
@@ -445,13 +531,9 @@
 
                             <div className="absolute top-6 right-16 flex gap-2">
                                 {isEditing ? (
-                                    <button onClick={handleSaveDetails} className="p-2 bg-indigo-500 text-white hover:bg-indigo-600 rounded-full transition-colors shadow-md flex items-center gap-1 text-xs pr-3">
-                                        <Icon name="Save" size={16} /> Sauver
-                                    </button>
+                                    <button onClick={handleSaveDetails} className="p-2 bg-indigo-500 text-white hover:bg-indigo-600 rounded-full transition-colors shadow-md flex items-center gap-1 text-xs pr-3"><Icon name="Save" size={16} /> Sauver</button>
                                 ) : (
-                                    <button onClick={() => setIsEditing(true)} className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition-colors opacity-0 group-hover:opacity-100" title="Modifier le ticket">
-                                        <Icon name="Edit2" size={18} />
-                                    </button>
+                                    <button onClick={() => setIsEditing(true)} className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition-colors opacity-0 group-hover:opacity-100"><Icon name="Edit2" size={18} /></button>
                                 )}
                             </div>
 
@@ -470,16 +552,9 @@
                             <div>
                                 <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-3">Description</h3>
                                 {isEditing ? (
-                                    <textarea 
-                                        rows="5"
-                                        value={editForm.description}
-                                        onChange={e => setEditForm({...editForm, description: e.target.value})}
-                                        className="w-full bg-slate-50 border border-indigo-300 rounded-2xl p-5 text-slate-800 resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm"
-                                    />
+                                    <textarea rows="5" value={editForm.description} onChange={e => setEditForm({...editForm, description: e.target.value})} className="w-full bg-slate-50 border border-indigo-300 rounded-2xl p-5 text-slate-800 resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm" />
                                 ) : (
-                                    <div className="bg-slate-50 border border-slate-100 rounded-2xl p-5 text-slate-700 whitespace-pre-wrap leading-relaxed shadow-inner">
-                                        {ticket.description}
-                                    </div>
+                                    <div className="bg-slate-50 border border-slate-100 rounded-2xl p-5 text-slate-700 whitespace-pre-wrap leading-relaxed shadow-inner">{ticket.description}</div>
                                 )}
                             </div>
 
@@ -493,12 +568,7 @@
                                         <div key={comment.id} className="group/comment bg-white border border-slate-100 shadow-sm rounded-2xl p-4 relative">
                                             {editingCommentId === comment.id ? (
                                                 <div className="flex flex-col gap-2 mt-1">
-                                                    <textarea 
-                                                        value={editCommentText}
-                                                        onChange={e => setEditCommentText(e.target.value)}
-                                                        className="w-full bg-slate-50 border border-indigo-300 rounded-xl p-3 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 custom-scrollbar"
-                                                        rows="2"
-                                                    />
+                                                    <textarea value={editCommentText} onChange={e => setEditCommentText(e.target.value)} className="w-full bg-slate-50 border border-indigo-300 rounded-xl p-3 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 custom-scrollbar" rows="2" />
                                                     <div className="flex justify-end gap-2">
                                                         <button onClick={() => setEditingCommentId(null)} className="px-3 py-1.5 text-xs font-medium text-slate-500 hover:bg-slate-100 rounded-lg transition-colors">Annuler</button>
                                                         <button onClick={() => handleSaveComment(comment.id)} className="px-3 py-1.5 text-xs font-medium bg-indigo-500 text-white hover:bg-indigo-600 rounded-lg shadow-sm transition-colors">Sauver</button>
@@ -508,29 +578,23 @@
                                                 <>
                                                     <p className="text-sm text-slate-700 pr-8 whitespace-pre-wrap">{comment.text}</p>
                                                     <p className="text-xs text-slate-400 mt-2">{new Date(comment.date).toLocaleString('fr-FR')}</p>
-                                                    <button 
-                                                        onClick={() => { setEditingCommentId(comment.id); setEditCommentText(comment.text); }}
-                                                        className="absolute top-3 right-3 p-1.5 text-slate-300 hover:text-indigo-500 hover:bg-indigo-50 rounded-lg opacity-0 group-hover/comment:opacity-100 transition-all"
-                                                        title="Modifier la note"
-                                                    >
+                                                    <button onClick={() => { setEditingCommentId(comment.id); setEditCommentText(comment.text); }} className="absolute top-3 right-3 p-1.5 text-slate-300 hover:text-indigo-500 hover:bg-indigo-50 rounded-lg opacity-0 group-hover/comment:opacity-100 transition-all">
                                                         <Icon name="Edit2" size={16} />
                                                     </button>
                                                 </>
                                             )}
                                         </div>
                                     ))}
-                                    {(!ticket.comments || ticket.comments.length === 0) && (
-                                        <p className="text-sm text-slate-400 italic">Aucune note pour le moment.</p>
-                                    )}
+                                    {(!ticket.comments || ticket.comments.length === 0) && <p className="text-sm text-slate-400 italic">Aucune note pour le moment.</p>}
                                 </div>
 
                                 <div className="relative">
                                     {shortcutMenu && filteredShortcuts.length > 0 && (
-                                        <div className="absolute bottom-full left-0 w-full mb-2 bg-white border border-slate-200 rounded-xl shadow-lg shadow-slate-200/50 overflow-hidden z-10">
-                                            <div className="px-3 py-2 bg-slate-50 border-b border-slate-100 text-xs font-semibold text-slate-400 uppercase tracking-wider">{shortcutTitle}</div>
+                                        <div className="absolute bottom-full left-0 w-full mb-2 bg-white/90 backdrop-blur-xl border border-slate-200 rounded-xl shadow-lg shadow-slate-200/50 overflow-hidden z-10 p-1">
+                                            <div className="px-3 py-2 bg-slate-50/50 border-b border-slate-100 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1 rounded-t-lg">{shortcutTitle}</div>
                                             <div className="max-h-48 overflow-y-auto custom-scrollbar">
                                                 {filteredShortcuts.map((shortcut, idx) => (
-                                                    <button key={idx} type="button" onClick={() => insertShortcut(shortcut)} className="w-full text-left px-4 py-2.5 text-sm text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors">
+                                                    <button key={idx} type="button" onClick={() => insertShortcut(shortcut)} className="w-full text-left px-3 py-2.5 text-sm text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors rounded-xl">
                                                         {shortcut}
                                                     </button>
                                                 ))}
@@ -539,8 +603,8 @@
                                     )}
 
                                     <form onSubmit={handleComment} className="flex gap-3">
-                                        <input type="text" value={commentText} onChange={handleInputChange} placeholder="Tape '/' (phrases), '*' (logiciels) ou '+' (projets)..." className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm text-slate-800 shadow-sm" />
-                                        <button type="submit" className="bg-slate-800 hover:bg-slate-700 text-white px-5 rounded-xl transition-all font-medium text-sm shadow-md">Envoyer</button>
+                                        <input type="text" value={commentText} onChange={handleInputChange} placeholder="Tape '/' (phrases), '*' (logiciels) ou '+' (projets)..." className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm text-slate-800 shadow-sm transition-all focus:bg-white" />
+                                        <button type="submit" className="bg-slate-800 hover:bg-slate-700 text-white px-5 rounded-xl transition-all font-medium text-sm shadow-md active:scale-95">Envoyer</button>
                                     </form>
                                 </div>
                             </div>
